@@ -1,22 +1,16 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Gasto, Pessoa
-from rest_framework.fields import FileField
+from .models import  Pessoa, ProcessedData
 
 class PessoaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pessoa
         fields = ['id', 'nome', 'email']
 
-class GastoSerializer(serializers.ModelSerializer):
+class ProcessedDataSerializer(serializers.ModelSerializer):
+    pessoa = serializers.PrimaryKeyRelatedField(queryset=Pessoa.objects.all(), required=False)
+    #pessoas_divididas = serializers.PrimaryKeyRelatedField(queryset=Pessoa.objects.all(), many=True, required=False)
+
     class Meta:
-        model = Gasto
-        fields = ['id', 'pessoa', 'valor', 'descricao', 'data', 'categoria']
-
-class UploadPDFSerializer(serializers.Serializer):
-    pdf = FileField()
-
-    def validate_pdf(self, value):
-        if not value.name.endswith('.pdf'):
-            raise serializers.ValidationError("O arquivo deve ser um PDF.")
-        return value
+        model = ProcessedData
+        fields = ['id', 'descricao', 'parcela', 'valor', 'data', 'pessoa']

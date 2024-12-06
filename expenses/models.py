@@ -8,12 +8,13 @@ class Pessoa(models.Model):
     def __str__(self):
         return self.nome
 
-class Gasto(models.Model):
-    pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    descricao = models.TextField()
+class ProcessedData(models.Model):
+    descricao = models.CharField(max_length=255)
+    parcela = models.CharField(max_length=20, null=True, blank=True)
+    valor = models.FloatField()
     data = models.DateField()
-    categoria = models.CharField(max_length=255)
+    pessoa = models.ForeignKey('Pessoa', on_delete=models.SET_NULL, null=True, blank=True, related_name='gastos')
 
     def __str__(self):
-        return f"{self.descricao} - {self.valor} - {self.data}"
+        return f"{self.descricao} - {self.valor}"
+    
