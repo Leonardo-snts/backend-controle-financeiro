@@ -7,7 +7,7 @@ router = DefaultRouter()
 router.register(r'pessoas', PessoaViewSet)
 router.register(r'gastos', ProcessedDataViewSet)
 
-urlpatterns = [
+urlpatterns = [  
     path('', include(router.urls)),
     path('process-file/', ProcessFileView.as_view(), name='process_file'),
     path('adicionar-pessoa/', AdicionarPessoaView.as_view(), name='adicionar-pessoa'),

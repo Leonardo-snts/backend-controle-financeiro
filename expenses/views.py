@@ -26,6 +26,8 @@ class AdicionarPessoaView(APIView):
         serializer = PessoaSerializer(pessoa)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
+
+    
 class ProcessedDataViewSet(viewsets.ModelViewSet):
     queryset = ProcessedData.objects.all()
     serializer_class = ProcessedDataSerializer

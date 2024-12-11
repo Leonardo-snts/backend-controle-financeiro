@@ -8,9 +8,8 @@ class PessoaSerializer(serializers.ModelSerializer):
         fields = ['id', 'nome', 'email']
 
 class ProcessedDataSerializer(serializers.ModelSerializer):
-    pessoa = serializers.PrimaryKeyRelatedField(queryset=Pessoa.objects.all(), required=False)
-    #pessoas_divididas = serializers.PrimaryKeyRelatedField(queryset=Pessoa.objects.all(), many=True, required=False)
-
+    pessoa = serializers.CharField(source='pessoa.nome', read_only=True)
+     
     class Meta:
         model = ProcessedData
         fields = ['id', 'descricao', 'parcela', 'valor', 'data', 'pessoa']
