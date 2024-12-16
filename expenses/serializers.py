@@ -12,4 +12,5 @@ class ProcessedDataSerializer(serializers.ModelSerializer):
      
     class Meta:
         model = ProcessedData
-        fields = ['id', 'descricao', 'parcela', 'valor', 'data', 'pessoa']
+        fields = ['id', 'descricao', 'parcela', 'valor', 'valor_total', 'data', 'pessoa']
+#Leonardo2002

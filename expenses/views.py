@@ -6,6 +6,7 @@ from rest_framework import viewsets, status
 from .models import ProcessedData, Pessoa
 from .serializers import PessoaSerializer, ProcessedDataSerializer
 from service.ia import process_file
+from django.db.models import Sum
 import os
 import logging
 import numpy as np
@@ -81,3 +82,24 @@ class ProcessFileView(APIView):
             # Remover o arquivo temporário, se existir
             if temp_file_path and os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
+                
+class TotalGastosPessoaView(APIView):
+    def get(self, request, pessoa_id):
+        try:
+            # Obter a pessoa pelo ID
+            pessoa = Pessoa.objects.get(id=pessoa_id)
+
+            # Calcular o total de gastos para essa pessoa
+            total_gastos = ProcessedData.objects.filter(pessoa=pessoa).aggregate(total=Sum('valor'))['total'] or 0
+
+            return Response({
+                "pessoa": PessoaSerializer(pessoa).data,
+                "total_gastos": total_gastos
+            }, status=status.HTTP_200_OK)
+        
+        except Pessoa.DoesNotExist:
+            return Response({"error": "Pessoa não encontrada."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            logging.error(f"Erro ao calcular os gastos da pessoa: {e}")
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
