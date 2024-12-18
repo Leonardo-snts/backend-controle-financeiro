@@ -11,7 +11,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('process-file/', ProcessFileView.as_view(), name='process_file'),
     path('adicionar-pessoa/', AdicionarPessoaView.as_view(), name='adicionar-pessoa'),
-    path('total-gastos/<int:pessoa_id>/', TotalGastosPessoaView.as_view(), name='total-gastos'),
+    path('total-gastos/', TotalGastosPessoaView.as_view(), name='total-gastos'),
 ]
 
 # endpoints

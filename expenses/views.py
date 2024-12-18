@@ -84,22 +84,23 @@ class ProcessFileView(APIView):
                 os.remove(temp_file_path)
                 
 class TotalGastosPessoaView(APIView):
-    def get(self, request, pessoa_id):
+    def get(self, request):
         try:
-            # Obter a pessoa pelo ID
-            pessoa = Pessoa.objects.get(id=pessoa_id)
+            # Obter todas as pessoas e calcular o total de gastos
+            pessoas = Pessoa.objects.all()
+            response_data = []
 
-            # Calcular o total de gastos para essa pessoa
-            total_gastos = Gasto.objects.filter(pessoa=pessoa).aggregate(total=Sum('valor'))['total'] or 0
+            for pessoa in pessoas:
+                total_gastos = Gasto.objects.filter(pessoa=pessoa).aggregate(total=Sum('valor'))['total'] or 0
+                response_data.append({
+                    "id": pessoa.id,
+                    "nome": pessoa.nome,
+                    "email": pessoa.email,
+                    "total_gastos": total_gastos,
+                })
 
-            return Response({
-                "pessoa": PessoaSerializer(pessoa).data,
-                "total_gastos": total_gastos
-            }, status=status.HTTP_200_OK)
-        
-        except Pessoa.DoesNotExist:
-            return Response({"error": "Pessoa não encontrada."}, status=status.HTTP_404_NOT_FOUND)
+            return Response(response_data, status=status.HTTP_200_OK)
 
         except Exception as e:
-            logging.error(f"Erro ao calcular os gastos da pessoa: {e}")
+            logging.error(f"Erro ao calcular os gastos das pessoas: {e}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
