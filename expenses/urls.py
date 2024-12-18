@@ -20,3 +20,6 @@ urlpatterns = [
 # api/adicionar-pessoa/
 # api/gastos/
 # api/upload-pdf/
+
+#700.27
+#120.33

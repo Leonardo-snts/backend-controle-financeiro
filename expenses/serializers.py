@@ -1,16 +1,16 @@
 # serializers.py
 from rest_framework import serializers
-from .models import  Pessoa, ProcessedData
+from .models import  Pessoa, Gasto
+from django.db import models
 
 class PessoaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pessoa
         fields = ['id', 'nome', 'email']
 
-class ProcessedDataSerializer(serializers.ModelSerializer):
-    pessoa = serializers.CharField(source='pessoa.nome', read_only=True)
+class GastoSerializer(serializers.ModelSerializer):
+    pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE)
      
     class Meta:
-        model = ProcessedData
-        fields = ['id', 'descricao', 'parcela', 'valor', 'valor_total', 'data', 'pessoa']
-#Leonardo2002
+        model = Gasto
+        fields = ['id', 'descricao', 'parcela', 'valor', 'pessoa', 'data']

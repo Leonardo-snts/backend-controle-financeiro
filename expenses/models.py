@@ -6,9 +6,9 @@ class Pessoa(models.Model):
     email = models.EmailField(unique=True)
 
     def __str__(self):
-        return f"{self.nome} - {self.email}"
+        return f"{self.nome}"
 
-class ProcessedData(models.Model):
+class Gasto(models.Model):
     descricao = models.CharField(max_length=255)
     parcela = models.CharField(max_length=20, null=True, blank=True)
     valor = models.FloatField()
@@ -18,4 +18,4 @@ class ProcessedData(models.Model):
 
     def __str__(self):
         return f"{self.descricao} - {self.valor} - {self.data}"
-    
+     

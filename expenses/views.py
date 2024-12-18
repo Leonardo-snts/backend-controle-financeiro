@@ -3,8 +3,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
-from .models import ProcessedData, Pessoa
-from .serializers import PessoaSerializer, ProcessedDataSerializer
+from .models import Gasto, Pessoa
+from .serializers import PessoaSerializer, GastoSerializer
 from service.ia import process_file
 from django.db.models import Sum
 import os
@@ -30,8 +30,8 @@ class AdicionarPessoaView(APIView):
 
     
 class ProcessedDataViewSet(viewsets.ModelViewSet):
-    queryset = ProcessedData.objects.all()
-    serializer_class = ProcessedDataSerializer
+    queryset = Gasto.objects.all()
+    serializer_class = GastoSerializer
 
 class ProcessFileView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -64,7 +64,7 @@ class ProcessFileView(APIView):
             saved_records = []
             for record in processed_data.to_dict(orient='records'):
                 # Criar a instância do modelo e salvar
-                obj = ProcessedData.objects.create(**record)
+                obj = Gasto.objects.create(**record)
                 saved_records.append(obj.id)
 
             # Retornar os IDs dos registros salvos e os dados processados
@@ -90,7 +90,7 @@ class TotalGastosPessoaView(APIView):
             pessoa = Pessoa.objects.get(id=pessoa_id)
 
             # Calcular o total de gastos para essa pessoa
-            total_gastos = ProcessedData.objects.filter(pessoa=pessoa).aggregate(total=Sum('valor'))['total'] or 0
+            total_gastos = Gasto.objects.filter(pessoa=pessoa).aggregate(total=Sum('valor'))['total'] or 0
 
             return Response({
                 "pessoa": PessoaSerializer(pessoa).data,
