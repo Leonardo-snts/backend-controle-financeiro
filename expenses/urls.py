@@ -13,13 +13,3 @@ urlpatterns = [
     path('adicionar-pessoa/', AdicionarPessoaView.as_view(), name='adicionar-pessoa'),
     path('total-gastos/', TotalGastosPessoaView.as_view(), name='total-gastos'),
 ]
-
-# endpoints
-
-# api/pessoas/
-# api/adicionar-pessoa/
-# api/gastos/
-# api/upload-pdf/
-
-#700.27
-#120.33
