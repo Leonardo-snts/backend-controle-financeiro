@@ -14,7 +14,7 @@ class Gasto(models.Model):
     valor = models.FloatField()
     valor_total = models.FloatField(null=True, blank=True)
     data = models.DateField()
-    pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE, null=True, blank=True)
+    pessoa = models.ManyToManyField(Pessoa, blank=True)
 
     def __str__(self):
         return f"{self.descricao} - {self.valor} - {self.data}"
