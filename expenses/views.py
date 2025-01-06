@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import viewsets, status
 from .models import Gasto, Pessoa
 from .serializers import PessoaSerializer, GastoSerializer
-from service.ia import process_file
+from utils.ia import process_file
 from django.db.models import Sum
 import os
 import logging
