@@ -13,4 +13,4 @@ class GastoSerializer(serializers.ModelSerializer):
      
     class Meta:
         model = Gasto
-        fields = ['id', 'descricao', 'parcela', 'valor', 'pessoa', 'data']
+        fields = ['id', 'descricao', 'parcela', 'valor', 'pessoa', 'data', 'is_divided']
