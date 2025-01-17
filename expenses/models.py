@@ -6,14 +6,17 @@ class Pessoa(models.Model):
     email = models.EmailField(unique=True)
 
     def __str__(self):
-        return self.nome
+        return f"{self.nome}"
 
 class Gasto(models.Model):
-    pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
-    descricao = models.TextField()
+    descricao = models.CharField(max_length=255)
+    parcela = models.CharField(max_length=20, null=True, blank=True)
+    valor = models.FloatField()
+    valor_total = models.FloatField(null=True, blank=True)
     data = models.DateField()
-    categoria = models.CharField(max_length=255)
+    pessoa = models.ManyToManyField(Pessoa, blank=True)
+    is_divided = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.descricao} - {self.valor} - {self.data}"
+    

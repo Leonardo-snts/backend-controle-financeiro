@@ -1,7 +1,7 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Gasto, Pessoa
-from rest_framework.fields import FileField
+from .models import  Pessoa, Gasto
+from django.db import models
 
 class PessoaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,14 +9,8 @@ class PessoaSerializer(serializers.ModelSerializer):
         fields = ['id', 'nome', 'email']
 
 class GastoSerializer(serializers.ModelSerializer):
+    pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE)
+     
     class Meta:
         model = Gasto
-        fields = ['id', 'pessoa', 'valor', 'descricao', 'data', 'categoria']
-
-class UploadPDFSerializer(serializers.Serializer):
-    pdf = FileField()
-
-    def validate_pdf(self, value):
-        if not value.name.endswith('.pdf'):
-            raise serializers.ValidationError("O arquivo deve ser um PDF.")
-        return value
+        fields = ['id', 'descricao', 'parcela', 'valor', 'pessoa', 'data', 'is_divided']
